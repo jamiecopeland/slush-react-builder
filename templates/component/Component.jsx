@@ -17,7 +17,6 @@ class <%= componentName %> extends React.Component {
     );
   }
 
-
 }
 
 module.exports = <%= componentName %>;
