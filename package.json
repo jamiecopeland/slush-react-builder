@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jamiecopeland/slush-react-es6.git"
+    "url": "https://github.com/jamiecopeland/slush-react-builder"
   },
   "bugs": {
-    "url": "https://github.com/jamiecopeland/slush-react-es6/issues"
+    "url": "https://github.com/jamiecopeland/slush-react-builder/issues"
   },
   "licenses": [
     {
