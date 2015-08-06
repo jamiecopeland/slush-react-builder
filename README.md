@@ -1,6 +1,6 @@
 # slush-react-builder
 
-A slush generator to scaffold React applications.
+A slush generator for React applications.
 
 ## Example
 
