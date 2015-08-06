@@ -1,34 +1,22 @@
-// --------------------------------------------------
-// Library imports
-
 import React from 'react';
-import reactMixin from 'react-mixin';
 
-// --------------------------------------------------
-// Project imports
-
-// --------------------------------------------------
-// Sass imports
-
-import sass from './<%= componentName %>.scss';
-
-// --------------------------------------------------
-// Class definition
+require('./<%= componentName %>.scss');
 
 class <%= componentName %> extends React.Component {
+
+  // --------------------------------------------------
+  // Lifecycle methods
 
   constructor(props) {
     super(props);
   }
-
-  // --------------------------------------------------
-  // Lifecycle methods
 
   render() {
     return (
       <div className="<%= cssClassName %>"></div>
     );
   }
+
 
 }
 

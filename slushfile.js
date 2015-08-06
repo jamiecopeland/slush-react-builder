@@ -16,12 +16,13 @@ var async = require('async');
 // Project imports
 
 function createComponentTemplateData(args) {
-  var componentFilePath = args[0];
-  var componentFilePathSplit = componentFilePath.split('/');
+  var rawFilePath = args[0];
+  var componentNameIsSpecified = rawFilePath.charAt(rawFilePath.length - 1) === '.';
+  var componentFilePathSplit = rawFilePath.split('/');
 
-  var directoryPath = _.initial(componentFilePathSplit).join('/');
-  var componentName = _.last(componentFilePathSplit);
-  var cssClassName = _.kebabCase(componentName);
+  var directoryPath = componentNameIsSpecified ? _.initial(componentFilePathSplit).join('/') : componentFilePathSplit.join('/');
+  var componentName = componentNameIsSpecified ? _.chain(componentFilePathSplit).last().trimRight('.').value() : _.chain(componentFilePathSplit).last().capitalize().value();
+  var cssClassName = args[1] || _.kebabCase(componentName);
 
   return {
     directoryPath: directoryPath,
@@ -34,8 +35,6 @@ function createComponentTemplateData(args) {
 // Tasks
 
 gulp.task('component', function (done) {
-
-  var filePath = gulp.args[0];
   var templateData = createComponentTemplateData(gulp.args);
 
   async.parallel([
@@ -56,7 +55,7 @@ gulp.task('component', function (done) {
     function(subTaskDone){
       gulp.src(__dirname + '/templates/component/Styles.scss')
         .pipe(template(templateData))
-        .pipe(rename(templateData.cssClassName + '.scss'))
+        .pipe(rename(templateData.componentName + '.scss'))
         .pipe(conflict('./', {
           defaultChoice: 'd'
         }))
