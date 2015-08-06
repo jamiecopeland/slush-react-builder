@@ -1,14 +1,14 @@
 {
-  "name": "slush-react-es6",
+  "name": "slush-react-builder",
   "description": "",
   "version": "0.1.1",
-  "homepage": "https://github.com/jamiecopeland/slush-angular-es6",
+  "homepage": "https://github.com/jamiecopeland/slush-react-builder",
   "author": {
     "name": "Jamie Copeland"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jamiecopeland/slush-react-builder"
+    "url": "https://github.com/jamiecopeland/slush-react-builder.git"
   },
   "bugs": {
     "url": "https://github.com/jamiecopeland/slush-react-builder/issues"
