@@ -11,6 +11,7 @@ var rename = require('gulp-rename');
 var inquirer = require('inquirer');
 var path = require('path');
 var async = require('async');
+var fs = require('fs');
 
 // --------------------------------------------------
 // Project imports
@@ -31,10 +32,15 @@ function createComponentTemplateData(args) {
   }
 }
 
+function getSlushConfig() {
+  return JSON.parse(fs.readFileSync('./slushConfig.json'));
+}
+
 // --------------------------------------------------
 // Tasks
 
 gulp.task('component', function (done) {
+  var slushConfig = getSlushConfig();
   var templateData = createComponentTemplateData(gulp.args);
 
   async.parallel([
