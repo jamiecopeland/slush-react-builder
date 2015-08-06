@@ -15,7 +15,8 @@ var async = require('async');
 // --------------------------------------------------
 // Project imports
 
-function createComponentTemplateData(componentFilePath) {
+function createComponentTemplateData(args) {
+  var componentFilePath = args[0];
   var componentFilePathSplit = componentFilePath.split('/');
 
   var directoryPath = _.initial(componentFilePathSplit).join('/');
@@ -35,7 +36,7 @@ function createComponentTemplateData(componentFilePath) {
 gulp.task('component', function (done) {
 
   var filePath = gulp.args[0];
-  var templateData = createComponentTemplateData(filePath);
+  var templateData = createComponentTemplateData(gulp.args);
 
   async.parallel([
 
