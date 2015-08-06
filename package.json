@@ -37,6 +37,6 @@
     "slush": ">=1.0.0"
   },
   "keywords": [
-    "slushgenerator"
+    "slush", "react", "generator", "scaffolding", "template"
   ]
 }
