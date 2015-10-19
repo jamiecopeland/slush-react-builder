@@ -8,8 +8,17 @@ Defaults templates are provided but can be overriden on a per project basis.
 
 *Or any other build tool that allows style files to be required within JavaScript files.
 
+## Installation
+Slush templates need to be installed globally, which usually means prefixing the line below with a ```sudo```.
+```
+npm install -g slush-react-builder
+```
+
 ## Usage
 
+*__WARNING: Conflict resolution is on the roadmap but not yet implemented. If new components are generated in the same location as existing ones, older files will overrwritten__*
+
+First navigate to the root of your project.
 ### Component names by convention
 Naming can be done by convention, where a capitalized version of the last segment of the path will be used as the component and style file name.
 ```
