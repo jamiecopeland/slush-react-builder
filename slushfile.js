@@ -32,37 +32,27 @@ function createComponentTemplateData(args) {
   }
 }
 
-function readFileSafe(path, defaultValue) {
+function requireSafe(filePath) {
   var obj;
+
   try {
-    obj = JSON.parse(fs.readFileSync(path));
+    obj = require(filePath);
   } catch (error) {
-    obj = defaultValue;
   }
+
   return obj;
 }
 
-function stringHasLength(str) {
-  try {
-    if(str && str.length >= 1) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch(error) {
-    return false;
-  }
-}
-
 function getSlushConfig() {
-  var config = readFileSafe('./slushconfig.json') || readFileSafe(path.join(__dirname, '/slushconfig.json'));
+  // If no local override is present use the global config
+  var config = requireSafe(path.resolve('./slushconfig.js')) || requireSafe(path.resolve(__dirname, 'slushconfig.js'));
 
   if(!config.templateDirectoryPath) {
-    throw(new Error('Error: templateDirectoryPath property is missing from slushconfig.json'))
+    throw(new Error('Error: templateDirectoryPath property is missing from slushconfig.js'))
   }
 
-  if(!config.styleFileType) {
-    throw(new Error('Error: styleFileType property is missing from slushconfig.json'))
+  if(!config.styleFileExtension) {
+    throw(new Error('Error: styleFileExtension property is missing from slushconfig.js'))
   }
 
   return config;
@@ -72,7 +62,6 @@ function getSlushConfig() {
 // Tasks
 
 gulp.task('component', function (done) {
-
   var config = getSlushConfig();
   var templateData = createComponentTemplateData(gulp.args);
 
@@ -83,7 +72,7 @@ gulp.task('component', function (done) {
         .pipe(template(templateData))
         .pipe(rename(templateData.componentName + '.jsx'))
         .pipe(conflict('./', {
-          defaultChoice: 'd'
+          defaultChoice: 'n'
         }))
         .pipe(gulp.dest(templateData.directoryPath))
         .on('finish', function() {
@@ -92,12 +81,11 @@ gulp.task('component', function (done) {
     },
 
     function(subTaskDone){
-      console.log('style: ', path.resolve(config.templateDirectoryPath, 'component', `Style.${config.styleFileType}`));
-      gulp.src(path.resolve(config.templateDirectoryPath, 'component', `Style.${config.styleFileType}`))
+      gulp.src(path.resolve(config.templateDirectoryPath, 'component', `Style.${config.styleFileExtension}`))
         .pipe(template(templateData))
-        .pipe(rename(templateData.componentName + `.${config.styleFileType}`))
+        .pipe(rename(templateData.componentName + `.${config.styleFileExtension}`))
         .pipe(conflict('./', {
-          defaultChoice: 'd'
+          defaultChoice: 'n'
         }))
         .pipe(gulp.dest(templateData.directoryPath))
         .on('finish', function() {
