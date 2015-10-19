@@ -2,10 +2,7 @@ import React from 'react';
 
 require('./<%= componentName %>.scss');
 
-class <%= componentName %> extends React.Component {
-
-  // --------------------------------------------------
-  // Lifecycle methods
+export default class <%= componentName %> extends React.Component; {
 
   constructor(props) {
     super(props);
@@ -18,5 +15,3 @@ class <%= componentName %> extends React.Component {
   }
 
 }
-
-module.exports = <%= componentName %>;

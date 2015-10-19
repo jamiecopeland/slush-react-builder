@@ -1,7 +1,7 @@
 'use strict';
 
 // --------------------------------------------------
-// Library imports
+// Imports
 
 var _ = require('lodash');
 var gulp = require('gulp');
@@ -14,7 +14,7 @@ var async = require('async');
 var fs = require('fs');
 
 // --------------------------------------------------
-// Project imports
+// Helpers
 
 function createComponentTemplateData(args) {
   var rawFilePath = args[0];
@@ -23,7 +23,7 @@ function createComponentTemplateData(args) {
 
   var directoryPath = componentNameIsSpecified ? _.initial(componentFilePathSplit).join('/') : componentFilePathSplit.join('/');
   var componentName = componentNameIsSpecified ? _.chain(componentFilePathSplit).last().trimRight('.').value() : _.chain(componentFilePathSplit).last().capitalize().value();
-  var cssClassName = args[1] || _.kebabCase(componentName);
+  var cssClassName = args[1] || componentName;
 
   return {
     directoryPath: directoryPath,
@@ -32,21 +32,54 @@ function createComponentTemplateData(args) {
   }
 }
 
+function readFileSafe(path, defaultValue) {
+  var obj;
+  try {
+    obj = JSON.parse(fs.readFileSync(path));
+  } catch (error) {
+    obj = defaultValue;
+  }
+  return obj;
+}
+
+function stringHasLength(str) {
+  try {
+    if(str && str.length >= 1) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch(error) {
+    return false;
+  }
+}
+
 function getSlushConfig() {
-  return JSON.parse(fs.readFileSync('./slushConfig.json'));
+  var config = readFileSafe('./slushconfig.json') || readFileSafe(path.join(__dirname, '/slushconfig.json'));
+
+  if(!config.templateDirectoryPath) {
+    throw(new Error('Error: templateDirectoryPath property is missing from slushconfig.json'))
+  }
+
+  if(!config.styleFileType) {
+    throw(new Error('Error: styleFileType property is missing from slushconfig.json'))
+  }
+
+  return config;
 }
 
 // --------------------------------------------------
 // Tasks
 
 gulp.task('component', function (done) {
-  var slushConfig = getSlushConfig();
+
+  var config = getSlushConfig();
   var templateData = createComponentTemplateData(gulp.args);
 
   async.parallel([
 
     function(subTaskDone){
-      gulp.src(__dirname + '/templates/component/Component.jsx')
+      gulp.src(path.resolve(config.templateDirectoryPath, 'component', 'Component.jsx'))
         .pipe(template(templateData))
         .pipe(rename(templateData.componentName + '.jsx'))
         .pipe(conflict('./', {
@@ -59,9 +92,10 @@ gulp.task('component', function (done) {
     },
 
     function(subTaskDone){
-      gulp.src(__dirname + '/templates/component/Styles.scss')
+      console.log('style: ', path.resolve(config.templateDirectoryPath, 'component', `Style.${config.styleFileType}`));
+      gulp.src(path.resolve(config.templateDirectoryPath, 'component', `Style.${config.styleFileType}`))
         .pipe(template(templateData))
-        .pipe(rename(templateData.componentName + '.scss'))
+        .pipe(rename(templateData.componentName + `.${config.styleFileType}`))
         .pipe(conflict('./', {
           defaultChoice: 'd'
         }))
