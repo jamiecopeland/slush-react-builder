@@ -22,21 +22,21 @@ First navigate to the root of your project.
 ### Component names by convention
 Naming can be done by convention, where a capitalized version of the last segment of the path will be used as the component and style file name.
 ```
-$ slush react-builder:component client/src/components/mapView
+$ slush react-builder:component src/client/components/mapView
 ```
 Creates:
-- client/src/components/mapView/MapView.jsx
-- client/src/components/mapView/MapView.scss
+- src/client/components/mapView/MapView.jsx
+- src/client/components/mapView/MapView.scss
 
 
 ### Component names by configuration
 If more control is required over naming, a file name may also be be specified.
 ```
-$ slush react-builder:component client/src/components/mapView SpecialMapView
+$ slush react-builder:component src/client/components/mapView SpecialMapView
 ```
 Creates:
-- client/src/components/mapView/SpecialMapView.jsx
-- client/src/components/mapView/SpecialMapView.scss
+- src/client/components/mapView/SpecialMapView.jsx
+- src/client/components/mapView/SpecialMapView.scss
 
 ## Templates
 ### Default templates

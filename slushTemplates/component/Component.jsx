@@ -1,6 +1,6 @@
 import React from 'react';
 
-require('./<%= componentName %>.scss');
+import './<%= componentName %>.scss';
 
 export default class <%= componentName %> extends React.Component {
 
